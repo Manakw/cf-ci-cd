@@ -1,0 +1,18 @@
+name: Forward GitHub Event to Backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send event to backend
+        run: |
+          curl -X POST "${{ secrets.BACKEND_URL }}" \
+            -H "Authorization: ${{ secrets.AUTHORIZATION }}" \
+            -H "Content-Type: application/json" \
+            -d '${{ toJson(github.event) }}'
